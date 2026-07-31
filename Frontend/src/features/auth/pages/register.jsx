@@ -1,10 +1,28 @@
+import { useState } from "react";
 import "../auth.form.scss";
-import {Link } from "react-router";
-const register = () => {
+import { Link, useNavigate } from "react-router";
+import { useAuth } from "../hooks/useAuth";
+
+const Register = () => {
+  const { loading, handleRegister } = useAuth();
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    handleRegister({ username, email, password });
+    navigate("/");
   };
+  if (loading) {
+    return (
+      <main>
+        <h1>Loading.....</h1>
+      </main>
+    );
+  }
+
   return (
     <main>
       <div className="form-container">
@@ -13,6 +31,9 @@ const register = () => {
           <div className="input-group">
             <label htmlFor="username">Username</label>
             <input
+              onChange={(e) => {
+                setUsername(e.target.value);
+              }}
               type="text"
               id="username"
               name="username"
@@ -22,6 +43,9 @@ const register = () => {
           <div className="input-group">
             <label htmlFor="email">Email</label>
             <input
+              onChange={(e) => {
+                setEmail(e.target.value);
+              }}
               type="email"
               id="email"
               name="email"
@@ -31,6 +55,9 @@ const register = () => {
           <div className="input-group">
             <label htmlFor="password">Password</label>
             <input
+              onChange={(e) => {
+                setPassword(e.target.value);
+              }}
               type="password"
               id="password"
               name="password"
@@ -40,10 +67,12 @@ const register = () => {
 
           <button className="button primary-button">Submit</button>
         </form>
-        <p>Already have an account? <Link to={"/login"}>Login</Link></p>
+        <p>
+          Already have an account? <Link to={"/login"}>Login</Link>
+        </p>
       </div>
     </main>
   );
 };
 
-export default register;
+export default Register;
