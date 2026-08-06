@@ -2,6 +2,7 @@ import { useState } from "react";
 import "../auth.form.scss";
 import { Link, useNavigate } from "react-router";
 import { useAuth } from "../hooks/useAuth";
+import { Riple } from "react-loading-indicators"
 
 const Register = () => {
   const { loading, handleRegister } = useAuth();
@@ -10,15 +11,15 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    handleRegister({ username, email, password });
+    await handleRegister({ username, email, password });
     navigate("/");
   };
   if (loading) {
     return (
       <main>
-        <h1>Loading.....</h1>
+        <Riple color="#ffffff" size="medium" text="" textColor="#ffffff" />
       </main>
     );
   }
@@ -38,6 +39,7 @@ const Register = () => {
               id="username"
               name="username"
               placeholder="Enter username"
+              required
             />
           </div>
           <div className="input-group">
@@ -50,6 +52,7 @@ const Register = () => {
               id="email"
               name="email"
               placeholder="Enter email address"
+              required
             />
           </div>
           <div className="input-group">
@@ -62,6 +65,8 @@ const Register = () => {
               id="password"
               name="password"
               placeholder="Enter password"
+              required
+              minLength={6}
             />
           </div>
 
